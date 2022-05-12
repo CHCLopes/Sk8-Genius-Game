@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mobile.css">
+  <link rel="shortcut icon" href="./assets/favicon.png" type="image/x-icon">
+  <!-- GOOGLE.FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+  <!-- ANIMSITION.CSS -->
+  <link rel="stylesheet" href="../dist/css/animsition.min.css">
+  
+  
+  <title>Sk8 Genius Game</title>
+</head>
+
+
+<body class="center flex vert">
+  
+  <div id="manual" class="center flex vert fadeIn">
+    <header>
+      <h1 class="ml1">
+        <span class="text-wrapper">
+          <span class="line line1"></span>
+          <span class="letters">The Sk8 Genius</span>
+          <span class="line line2"></span>
+        </span>
+      </h1>
+    </header>
+
+    <h1 class="ml1">
+      <span class="text-wrapper">
+        <span class="line line1"></span>
+        <span class="letters">Bem-Vindo</span>
+        <span class="line line2"></span>
+      </span>
+    </h1>
+
+    <ul>
+      <li>SE NÃO LIGAR, NÃO FUNCIONA</li>
+      <li>TESTE SUA HABILIDADE EM 4 MODOS DE DIFICULDADE</li>
+      <li>FAÇA EXATAMENTE COMO O GENIUS MANDOU</li>
+      <li>VOCÊ GANHA UM PONTO POR ACERTO. QUANTOS VOCÊ CONSEGUE?</li>
+      <li>NÃO GASTE AS PILHAS, DESLIGUE ANTES DE SAIR!</li>
+      <li>QUER COMEÇAR DE NOVO? TEM BOTÃO PRA ISSO</li>
+      <li>SE DIVIRTA!!!</li>
+    </ul>
+
+    <div id="play" class="flex center centerV marginG" onclick="gameIn()">Jogar!</div>
+
+    <div id="credits" class="flex around">
+      <h1 class="ml16 margG">Dev By Sk8</h1>
+      <div class="flex center">
+        <a href="https://github.com/CHCLopes">
+          <img src="./assets/github.gif" alt="Github" class="icon margG">
+        </a>
+        <a href="https://www.linkedin.com/in/carlos-lopes-b445aa201/">
+          <img src="./assets/linkedin.gif" alt="LinkedIn" class="icon margG">
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <!-- animsition.js -->
+  <script src="../dist/js/animsition.min.js"></script>
+  <!-- ANIMAÇÃO DOS TÍTULOS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

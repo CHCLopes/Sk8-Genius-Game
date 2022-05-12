@@ -1,0 +1,115 @@
+/*RESPONSIVIDADE SMARPHONES COM A ORIENTAÇÃO EM RETRATO*/
+@media (min-width: 300px) and (max-width: 720px){
+  body{
+    height: 100%;
+  }
+
+  #manual ul{
+    font-size: .8em;
+  }
+
+  #play{
+    font-size: 1.5em;
+  }
+
+  .textSize1{
+    font-size: 2em;
+  }
+  
+  .textSize2{
+    font-size: 4em;
+  }
+  
+  .textSize3{
+    font-size: 7em;
+  }
+
+  #game{
+    width: 300px;
+    height: 300px;
+    top:2px;
+    left: 0vw;
+  }
+
+  .panelOff{
+    border: black 10px solid;
+    top: 0%;
+    left: 0%;
+    width: 95%;
+    height: 95%;
+  }
+  
+  .panelOn{
+    border: rgb(251, 255, 0) 10px solid;
+    top: 6.5%;
+    left: 6.5%;
+    width: 80%;
+    height: 80%;
+  }
+
+  #label{
+    font-size: 3em;
+  }
+  
+  .btnTitle{
+    font-size: .5em;
+  }
+
+  .ml1 {
+    font-weight: 450;
+    font-size: 2em;
+  }
+
+  .ml16 {
+    font-weight: 200;
+    font-size: .6em;
+  }
+
+  footer{
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
+  }
+
+  #panelMenu{
+    height: 125px;
+    padding: 0;
+  }
+
+  #panelMenu h1{
+    margin: 1px;
+    font-size: .7em;
+  }
+
+  #labelMenu{
+    font-size: 3em;
+  }
+
+  #credits{
+    
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
+  }
+
+  .icon{
+    width: 1rem;
+    height: 1rem;
+    }
+
+  .btnGroup{
+    flex-direction: column;
+  }
+
+  #scoreMenu{
+    flex-direction: column;
+    justify-self: center;
+    margin: 0;
+  }
+
+  #difficultyMenu{
+    flex-direction: column;
+    margin: 0;
+  }
+}

@@ -1,0 +1,614 @@
+*{
+  font-family: 'Russo One', sans-serif;
+}
+
+/*CLASSES REUTILIZÁVEIS*/
+.margG{
+  margin: .5rem;
+}
+
+.margM{
+  margin: .3rem;
+}
+
+.margP{
+  margin: .1rem;
+}
+
+.paddG{
+  padding: .5rem;
+}
+
+.paddP{
+  padding: .1rem;
+}
+
+.flex{
+  display: flex;
+}
+
+.center{
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+}
+
+.centerV{
+  align-items:center;
+  align-content:center;
+  text-align: center;
+}
+
+.around{
+  justify-content: space-around;
+}
+
+.hor{
+  flex-direction: row;
+}
+
+.vert{
+  flex-direction: column;
+}
+
+.absolute {
+  position:absolute;
+}
+
+.sizeCover{
+  background-size: cover;
+}
+
+.rounded{
+  border-radius: 100%;
+}
+
+/*FORMATAÇÃO DAS BOAS VINDAS*/
+h1.ml8 {
+  font-weight: 900;
+  font-size: 4.5em;
+  color: #fff;
+  width: 3em;
+  height: 3em;
+}
+
+.ml8 .letters-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  height: 1em;
+}
+
+.ml8 .letters {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  line-height: 0.7em;
+  right: -0.12em;
+  top: -0.2em;
+}
+
+.ml8 .bang {
+  font-size: 1.4em;
+  top: auto;
+  left: -0.06em;
+}
+
+.ml8 .circle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+}
+
+.ml8 .circle-white {
+  width: 3em;
+  height: 3em;
+  border: 2px dashed white;
+  border-radius: 2em;
+}
+
+.ml8 .circle-dark {
+  width: 2.2em;
+  height: 2.2em;
+  background-color: #4f7b86;
+  border-radius: 3em;
+  z-index: 1;
+}
+
+.ml8 .circle-dark-dashed {
+  border-radius: 2.4em;
+  background-color: transparent;
+  border: 2px dashed #4f7b86;
+  width: 2.3em;
+  height: 2.3em;
+}
+
+/*PRINCIPAL*/
+
+body{
+  background-color: seagreen;
+  justify-content: center;
+  transform:scale(90%)
+}
+
+.fadeIn{
+  animation: fadein 2s; 
+  opacity: 1;
+}
+
+@keyframes fadein {
+  from { opacity: 0.0; }
+  to { opacity: 1; }
+}
+
+.fadeOut{
+  animation: fadeout 2s; 
+  opacity: 0;
+}
+
+@keyframes fadeout {
+  from { opacity: 1; }
+  to { opacity: 0; } 
+}
+
+.selected{
+  filter: brightness(70%);
+}
+
+#manual{
+  background-color: #4f7b8654;  
+  border: 3px solid transparent;
+  border-image: linear-gradient(to right, green, lightgreen,green);
+  border-image-slice: 1;
+  padding: 2px;
+}
+
+#play{
+  background-color: none;
+  width: 30%;
+  height: fit-content;
+  font-size: 3em;
+  border: 3px solid transparent;
+  border-image: linear-gradient(to right, green, lightgreen,green);
+  border-image-slice: 1;
+  cursor: pointer;
+}
+
+/*JOGO*/
+
+#game{
+  width: 460px;
+  height: 460px;
+  background-color: black;
+  position: relative;
+  top:2px;
+  left: 30vw;
+  border-radius: 100%;
+}
+
+#green{
+  width: 40%;
+  height: 40%;
+  display: block;
+  position: absolute;
+  top: 7%;
+  left: 7%;
+  border-top-left-radius: 100%;
+  cursor: pointer;
+}
+
+.greenOff{
+  background-color: rgb(1, 71, 22);
+}
+
+.greenOn{
+  border-top: 4px solid yellow;
+  border-left: 4px solid yellow;
+  background-color: green;
+}
+
+.greenSelected{
+  border-top: 4px solid yellow;
+  border-left: 4px solid yellow;
+  background-color: rgb(141, 245, 4);
+}
+
+#red{
+  width: 40%;
+  height: 40%;
+  display: block;
+  position: absolute;
+  top: 7%;
+  left: 52%;
+  border-top-right-radius: 100%;
+  cursor: pointer;
+}
+
+.redOff{
+  background-color: rgb(80, 0, 0);
+}
+
+.redOn{
+  border-top: 4px solid yellow;
+  border-right: 4px solid yellow;
+  background-color: red;
+}
+
+.redSelected{
+  border-top: 4px solid yellow;
+  border-right: 4px solid yellow;
+  background-color: rgb(255, 136, 0);
+}
+
+#controls{
+  min-width: 45%;
+  min-height: 45%;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  border-radius: 100%;
+  display: block;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  z-index: 9;
+}
+
+.ledsOn{
+  -webkit-transition: all 2s ease;
+  transition: all 2s ease;
+  -webkit-transform:scale(55%);
+  transform:scale(55%);
+  -webkit-transform:translate(top 28%, left 27%);
+  transform:translate(top 28%, left 27%);  
+}
+
+.ledsOff{
+  -webkit-transition: all 2s ease;
+  transition: all 2s ease;
+  -webkit-transform:scale(100%);
+  transform:scale(100%);
+  -webkit-transform:translate(top 0, left 0);
+  transform:translate(top 0%, left 0);  
+}
+
+#panel{
+  background-color: gray;
+  border-radius: 100%;
+  z-index: 11;
+  display: block;
+  position: absolute;
+  
+}
+
+.panelOff{
+  border: black 30px solid;
+  top: 0%;
+  left: 0%;
+  width: 87%;
+  height: 87%;
+}
+
+.panelOn{
+  border: rgb(251, 255, 0) 10px solid;
+  top: 5%;
+  left: 5%;
+  width: 86%;
+  height: 86%;
+}
+
+.gameOn{
+  border: rgb(252, 206, 0) 6px solid;
+}
+
+#label{
+  top: 5%;
+  left: 43%;
+  height:fit-content;
+  width: fit-content;
+  padding: 0;
+  font-size: 5em;
+}
+
+.labelOn{
+  color: rgb(255, 238, 0);
+  -webkit-text-stroke: 2px rgb(255, 81, 0);
+}
+
+.displays{
+  top: 30%;
+  height:fit-content;
+  width: 30%;
+  padding: 2px;  
+}
+
+.displayTitle{
+  font-size: 1.5em;
+  color: darkgreen;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.displays span{
+  border: 3px black solid;
+  background-color: rgb(28, 31, 31);
+  position: relative;
+  font-size: 2em;
+  width: 95%;
+  text-align: right;
+}
+
+#score{
+  left: 5%;
+}
+
+#difficulty{
+  left: 65%
+}
+
+.displayOff{
+  color: rgb(28, 31, 31);  
+}
+
+.displayOn{
+  color: rgb(0, 255, 42);  
+}
+
+.btnTitle{
+  font-size: 1em;
+  color: darkgreen;
+  margin: none;
+  padding: none;
+}
+
+.button{
+  width: 20%;
+  height: 20%;
+  position: absolute;
+  padding: none;
+  margin: none;
+}
+
+button{
+  border-radius: 100%;
+  width: 40%;
+  height: 40%;
+  cursor: pointer;
+}
+
+#power{
+  width: 30%;
+  height: 30%;
+  top: 35%;
+  left: 36%;
+  position: absolute;
+}
+
+#power button{
+  background-color: darkred;
+}
+
+#restart{
+  top: 70%;
+  left: 17%;
+  position: absolute;
+}
+
+#restart button{
+  background-color: darkgoldenrod;
+}
+
+#start{
+  top: 70%;
+  left: 42%;
+  position: absolute;
+}
+
+#start button{
+  background-color: darkblue;
+}
+
+#skill{
+  top: 70%;
+  left: 65%;
+  position: absolute;
+}
+
+#skill button{
+  background-color: darkgoldenrod;
+}
+
+#yellow{
+  width: 40%;
+  height: 40%;
+  display: block;
+  position: absolute;
+  top: 52%;
+  left: 7%;
+  border-bottom-left-radius: 100%;
+  cursor: pointer;
+}
+
+.yellowOff{
+  background-color: rgb(65, 60, 0);
+}
+
+.yellowOn{
+  border-bottom: 4px solid yellow;
+  border-left: 4px solid yellow;
+  background-color: darkgoldenrod;
+}
+
+.yellowSelected{
+  border-bottom: 4px solid yellow;
+  border-left: 4px solid yellow;
+  background-color: rgb(255, 251, 0);
+}
+
+#blue{
+  width: 40%;
+  height: 40%;
+  display: block;
+  position: absolute;
+  top: 52%;
+  left: 52%;
+  border-bottom-right-radius: 100%;
+  border-top-left-radius: -100%;
+  cursor: pointer;
+}
+
+.blueOff{
+  background-color: rgb(0, 23, 58);
+}
+
+.blueOn{
+  border-bottom: 4px solid yellow;
+  border-right: 4px solid yellow;
+  background-color: rgb(0, 47, 255);
+}
+
+.blueSelected{
+  border-bottom: 4px solid yellow;
+  border-right: 4px solid yellow;
+  background-color: rgb(0, 217, 255);
+}
+
+footer{
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  justify-self: center;
+  width: 98vw;
+  margin-top: 3px;
+  padding: 0;
+  
+}
+
+#credits{
+  border-top: 1px black solid;
+  margin-top: 5px;
+}
+
+.icon{
+  width: 2rem;
+  height: 2rem;
+  }
+
+
+/*ANIMAÇÃO DO RODAPÉ*/
+.ml16 {
+  color: black;
+  font-weight: 400;
+  font-size: 1em;
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  overflow: hidden;
+  height: 2em;
+}
+
+.ml16 .letter {
+  display: inline-block;
+  line-height: 1em;
+}
+
+#panelMenu{
+  background-color: gray;
+  border-radius: 15px;
+  margin-right: 5px;
+  transform:scale(85%)
+}
+
+#panelMenu h1{
+  margin: 5px;
+  font-size: 1.5em;
+}
+
+.panelMenuOff{
+  border: black 5px solid;
+}
+
+.panelMenuOn{
+  border: rgb(251, 255, 0) 5px solid;
+}
+
+#labelMenu{
+  height:fit-content;
+  width: 10%;
+  padding: 0;
+  font-size: 4em;
+  margin: 0 10px 0 10px;
+}
+
+.labelMenuOn{
+  color: rgb(255, 238, 0);
+  -webkit-text-stroke: 2px rgb(255, 81, 0);
+}
+
+#scoreMenu{
+  padding: 3;
+  width: 100%;
+  margin: 3px;
+}
+
+#scoreScreenMenu{
+  width: 70%;  
+}
+
+#difficultyMenu{
+  padding: 3;
+  width: 100%;
+  margin: 3px;
+}
+
+#difficultyScreenMenu{
+  width: 70%;
+}
+
+.buttonMenu{
+  width: 20%;
+  height: 20%;
+  margin: 3px;
+}
+
+#panelMenu button{
+  height: 30px;
+  width: 30px;
+  margin: 0;
+}
+
+.containerMenu{
+  width: 30%;
+  height: 100%;
+  padding: 0;
+  margin: 3px;
+}
+
+.btnGroup{
+  padding: 3;
+  width: 100%;
+  height: 100%;
+}
+
+#powerMenu button{
+  background-color: darkred;
+}
+
+#restartMenu button{
+  background-color: darkgoldenrod;
+}
+
+#startMenu button{
+  background-color: darkblue;
+}
+
+#skillMenu button{
+  background-color: darkgoldenrod;
+}
