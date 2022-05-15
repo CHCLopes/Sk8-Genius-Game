@@ -1,5 +1,5 @@
 /*RESPONSIVIDADE SMARPHONES COM A ORIENTAÇÃO EM RETRATO*/
-@media (min-width: 300px) and (max-width: 720px){
+@media (min-width: 300px) and (max-width: 600px){
   body{
     height: 100%;
   }
@@ -28,7 +28,7 @@
     width: 300px;
     height: 300px;
     top:2px;
-    left: 0vw;
+    left: 2px;
   }
 
   .panelOff{
@@ -64,6 +64,27 @@
     font-weight: 200;
     font-size: .6em;
   }
+
+  .ml12 {
+    font-weight: 100;
+    font-size:1.7em;
+    letter-spacing: 0.4em;
+    top: -230px;
+    left: -150px;
+    width: 180vw;
+    padding: 1px;
+  }
+
+  .ml15 {
+    font-weight: 100;
+    font-size:4em;
+    letter-spacing: 0.4em;
+    top: -230px;
+    left: -150px;
+    width: 180vw;
+    padding: 1px;
+  }
+
 
   footer{
     flex-direction: column;

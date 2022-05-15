@@ -159,7 +159,7 @@ body{
 }
 
 .selected{
-  filter: brightness(70%);
+  filter:brightness(500%);
 }
 
 #manual{
@@ -189,7 +189,7 @@ body{
   background-color: black;
   position: relative;
   top:2px;
-  left: 30vw;
+  left: 33vw;
   border-radius: 100%;
 }
 
@@ -214,12 +214,6 @@ body{
   background-color: green;
 }
 
-.greenSelected{
-  border-top: 4px solid yellow;
-  border-left: 4px solid yellow;
-  background-color: rgb(141, 245, 4);
-}
-
 #red{
   width: 40%;
   height: 40%;
@@ -232,19 +226,13 @@ body{
 }
 
 .redOff{
-  background-color: rgb(80, 0, 0);
+  background-color: rgb(48, 0, 0);
 }
 
 .redOn{
   border-top: 4px solid yellow;
   border-right: 4px solid yellow;
-  background-color: red;
-}
-
-.redSelected{
-  border-top: 4px solid yellow;
-  border-right: 4px solid yellow;
-  background-color: rgb(255, 136, 0);
+  background-color: rgb(124, 1, 1);
 }
 
 #controls{
@@ -447,12 +435,6 @@ button{
   background-color: darkgoldenrod;
 }
 
-.yellowSelected{
-  border-bottom: 4px solid yellow;
-  border-left: 4px solid yellow;
-  background-color: rgb(255, 251, 0);
-}
-
 #blue{
   width: 40%;
   height: 40%;
@@ -475,12 +457,6 @@ button{
   background-color: rgb(0, 47, 255);
 }
 
-.blueSelected{
-  border-bottom: 4px solid yellow;
-  border-right: 4px solid yellow;
-  background-color: rgb(0, 217, 255);
-}
-
 footer{
   display: flex;
   justify-content: center;
@@ -501,6 +477,43 @@ footer{
   width: 2rem;
   height: 2rem;
   }
+
+/*LETREIRO DE BOAS VINDAS*/
+.ml12 {
+  font-weight: 200;
+  font-size:3em;
+  letter-spacing: 0.5em;
+  color: white;
+  position: relative;
+  top: -340px;
+  left: -290px;
+  width: 150vw;
+  padding: 5px;
+}
+
+.ml12 .letter {
+  display: inline-block;
+  line-height: 1em;
+}
+
+/*LETREIRO DE FIM DE JOGO*/
+.ml15 {
+  font-weight: 800;
+  font-size: 3.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  color: white;
+  position: relative;
+  top: -340px;
+  left: -100px;
+  width: 150vw;
+  padding: 5px;
+}
+
+.ml15 .word {
+  display: inline-block;
+  line-height: 1em;
+}
 
 
 /*ANIMAÇÃO DO RODAPÉ*/

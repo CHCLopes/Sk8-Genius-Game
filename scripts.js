@@ -38,7 +38,7 @@ const BODY = document.body,
 let points = 0,
     difficulty = 1,
     gameOff = true,
-    gameOver = false,
+    gameIsOver = false,
     turn = 0,
     clikedOrder = [],
     order = [];
@@ -214,6 +214,11 @@ function gameBoard(){
         YELLOW = document.getElementById('yellow'),
         BLUE = document.getElementById('blue');
 
+  SCORE.textContent = points;
+  SCORESCREENMENU.textContent = points;
+  DIFFICULTY.textContent = difficulty;
+  DIFFICULTYSCREENMENU.textContent = difficulty;
+
   POWER.addEventListener('click', powerOn);
   POWERMENU.addEventListener('click', powerOn);
   RESTART.addEventListener('click', reload);
@@ -223,11 +228,6 @@ function gameBoard(){
   START.addEventListener('click', gameStart);
   STARTMENU.addEventListener('click', gameStart);
 
-  SCORE.textContent = points;
-  SCORESCREENMENU.textContent = points;
-  DIFFICULTY.textContent = difficulty;
-  DIFFICULTYSCREENMENU.textContent = difficulty;
-
   //ACENDE OS LEDS DO PANEL
   function powerOn(){
     if(gameOff){
@@ -236,6 +236,7 @@ function gameBoard(){
     }else{
       gameOff = !gameOff;
       ledsOff();
+      turn = 0;
     }
   }
 
@@ -339,75 +340,434 @@ function gameBoard(){
   //COMEÇA O JOGO
   function gameStart() {
     if(!gameOff){
+    
+    // Sorteia números entre 0 e 3. Cria ordem aleatória de cores.
+    let shuffleOrder = () => {
+      let colorOrder = Math.floor(Math.random() * 4);
+      order[order.length] = colorOrder;
+      clickedOrder = [];
+
+      for(let i = 0; i < order.length; i++) {
+          let elementColor = createColorElement(order[i]);
+          lightColor(elementColor, Number(i) + 1);
+      }
+    }
+
+    // Acende a próxima cor.
+    let lightColor = (element, number) => {
+      number = number * 900/difficulty;
       
-      //SEQUENCIA A SER SEGUIDA
-      function sequency(){
-        turn++;
-        console.log(turn, order);
-        let colorOrder = Math.floor(Math.random() * 4);
-        order.push(colorOrder);
-        for (let i = 0; i <= order.length; i++){        
-          if (order[i] = 1){
+      setTimeout(elementSelected, number - 100);
+      
+      function elementSelected(){
+        element.classList.add('selected');
+        setTimeout(() => {
+          element.classList.remove('selected');
+        }, 600-(difficulty*100));
+      }
+    }
+
+    // Checa se as cores selecionadas são as mesmas da ordem gerada no jogo.
+    let checkOrder = () => {
+      //LETREIRO DE PONTUAÇÃO
+      const NEXTTURNMSG = document.createElement('div');
+        NEXTTURNMSG.innerHTML = `
+          <h1 class="ml12"> Missão ${turn} COMPLETA</h1>
+        `;
+
+      for(let i in clickedOrder) {
+          if(clickedOrder[i] != order[i]) {
+            gameIsOver = !gameIsOver
+            gameOver();
+            PANEL.appendChild(NEXTTURNMSG);
+            PANEL.removeChild(NEXTTURNMSG);
+            return;
+          }
+      }
+
+      if(clickedOrder.length == order.length) {
+        points++;
+        //LETREIRO DE PONTUAÇÃO
+        PANEL.appendChild(NEXTTURNMSG);        
+
+        //ANIMAÇÃO DO LETREIRO DE BOAS VINDAS
+        // Wrap every letter in a span
+        var textWrapper = document.querySelector('.ml12');
+        textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+
+        anime.timeline({loop: false})
+          .add({
+            targets: '.ml12 .letter',
+            translateX: [40,0],
+            translateZ: 0,
+            opacity: [0,1],
+            easing: "easeOutExpo",
+            duration: 1200,
+            delay: (el, i) => 500 + 30 * i
+          }).add({
+            targets: '.ml12 .letter',
+            translateX: [0,-30],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1100,
+            delay: (el, i) => 100 + 30 * i
+          });
+          
+          setTimeout(() => {
+            PANEL.removeChild(NEXTTURNMSG);
+          },3000)
+
+        SCORE.textContent = points;
+        SCORESCREENMENU.textContent = points;
+        setTimeout(nextLevel,3000);
+      }
+    }
+
+    // Clique do jogador.
+    let click = (color) => {
+      if(!gameIsOver){
+        clickedOrder[clickedOrder.length] = color;
+        createColorElement(color).classList.add('selected');
+        
+        setTimeout(() => {
+          createColorElement(color).classList.remove('selected');
+          checkOrder();
+        },250);
+      }
+    }
+
+    // Retorna a cor.
+    let createColorElement = (color) => {
+      if(color == 0) {
+          return green;
+      } else if (color == 1) {
+          return red;
+      } else if (color == 2) {
+          return yellow;
+      } else if (color == 3) {
+          return blue;
+      }
+    }
+
+    // Próximo nível.
+    let nextLevel = () => {
+      setTimeout(shuffleOrder, 300);
+      turn++;
+    }
+
+    // Game Over.
+    let gameOver = () => {
+      //LETREIRO DE FIM DE JOGO
+      const GAMEOVERMSG = document.createElement('div');
+      GAMEOVERMSG.innerHTML = `
+        <h1 class="ml15 flex hor">
+          <span class="word">GAME</span>
+          <span class="word">OVER</span>
+        </h1>
+      `;
+      PANEL.appendChild(GAMEOVERMSG);
+
+      anime.timeline({loop: true})
+      .add({
+        targets: '.ml15 .word',
+        scale: [14,1],
+        opacity: [0,1],
+        easing: "easeOutCirc",
+        duration: 800,
+        delay: (el, i) => 800 * i
+      }).add({
+        targets: '.ml15',
+        opacity: 0,
+        duration: 1000,
+        easing: "easeOutExpo",
+        delay: 1000
+      });
+      
+      if(START.click | STARTMENU.click){
+        PANEL.removeChild(GAMEOVERMSG)
+      }
+
+      setTimeout(() => {
+        PANEL.removeChild(GAMEOVERMSG)
+        },10000)
+      order = [];
+      clickedOrder = [];
+    }
+
+    // Início do Game.
+    let playGame = () => {
+      gameIsOver = false
+      order = []
+      turn = 0;
+      points = 0;
+      SCORE.textContent = points;
+      SCORESCREENMENU.textContent = points;
+      
+    //LETREIRO DE BOAS VINDAS
+    const WELCOME = document.createElement('div');
+    WELCOME.innerHTML = `
+    
+    <h1 class="ml12">Bem Vindo ao Genius!</h1>
+    `
+    PANEL.appendChild(WELCOME);
+
+    //ANIMAÇÃO DO LETREIRO DE BOAS VINDAS
+    // Wrap every letter in a span
+    var textWrapper = document.querySelector('.ml12');
+    textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+
+    anime.timeline({loop: true})
+      .add({
+        targets: '.ml12 .letter',
+        translateX: [40,0],
+        translateZ: 0,
+        opacity: [0,1],
+        easing: "easeOutExpo",
+        duration: 1200,
+        delay: (el, i) => 500 + 30 * i
+      }).add({
+        targets: '.ml12 .letter',
+        translateX: [0,-30],
+        opacity: [1,0],
+        easing: "easeInExpo",
+        duration: 1100,
+        delay: (el, i) => 100 + 30 * i
+      });
+
+      
+      setTimeout(() => {
+        PANEL.removeChild(WELCOME);
+      },3000)
+      setTimeout(nextLevel,3000);
+    }
+
+    playGame(); 
+
+    // Evento de clique para as cores.
+    GREEN.onclick = () => click(0);
+    RED.onclick = () => click(1);
+    YELLOW.onclick = () => click(2);
+    BLUE.onclick = () => click(3);
+
+    } 
+  }
+}    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+        /*    
+        // Sortea números entre 0 e 3. Cria ordem aleatória de cores.
+        let sequency = () => {
+          let colorOrder = Math.floor(Math.random() * 4);
+          order[order.length] = colorOrder;
+          clickedOrder = [];
+          clickedOrder[clickedOrder.length] = color;
+          console.log(order);
+          for(let i in order) {
+            let elementColor = createColorElement(order[i]);
+            lightColor(elementColor, Number(i) + 1);
+          }
+        }
+
+        //Acende a próxima cor.
+        let lightColor = (element, number) => {
+          number = number * 500;
+          
+          setTimeout(() => {
+              element.classList.add('selected');
+          }, number - 250);
+
+          setTimeout(() => {
+              element.classList.remove('selected');
+          });
+
+        }
+        
+        setTimeout(sequency, 200);
+
+        
+        // Retorna a cor.
+        
+        let createColorElement = (color) => {
+          if(color == 0) {
+              return greenTileOn();
+          } else if (color == 1) {
+              return redTileOn();
+          } else if (color == 2) {
+              return yellowTileOn();
+          } else if (color == 3) {
+              return blueTileOn();
+          }
+        }
+          
+        function greenTileOn(){
+          if(GREEN.click){
             GREEN.classList.add('greenSelected');
             GREEN.classList.remove('greenOn');
-            setTimeout(greenBack, 200);
-          } else if (order[i] = 2){
+            setTimeout(greenBack, 500);
+          };
+        }
+
+        function redTileOn(){
+          if(RED.click){
             RED.classList.add('redSelected');
             RED.classList.remove('redOn');
-            setTimeout(redBack, 200);
-          } else if (order[i] = 3){
+            setTimeout(redBack, 500);
+          };
+        }
+
+        function yellowTileOn(){
+          if(YELLOW.click){
             YELLOW.classList.add('yellowSelected');
             YELLOW.classList.remove('yellowOn');
-            setTimeout(yellowBack, 200);
-          } else if (order[i] = 4){
+            setTimeout(yellowBack, 500);
+          };
+        }
+
+        function blueTileOn(){
+          if(BLUE.click){
             BLUE.classList.add('blueSelected');
             BLUE.classList.remove('blueOn');
-            setTimeout(blueBack, 200);
-          }
+            setTimeout(blueBack, 500);
+          };
+        }
 
+        let clickColorElement = (color) => {
+          if(GREEN.click) {
+              return clickGreenTile();
+          } else if (RED.click) {
+              return clickRedTile();
+          } else if (YELLOW.click) {
+              return clickYellowTile();
+          } else if (BLUE.click) {
+              return clickBlueTile();
+          }
+        }
+
+        function clickGreenTile(){
+          if(GREEN.click){
+            GREEN.classList.add('greenSelected');
+            GREEN.classList.remove('greenOn');
+            clikedOrder.push(Number(1));
+            setTimeout(greenBack, 500);
+            
+          };
+        }
+
+        function clickRedTile(){
+          if(RED.click){
+            RED.classList.add('redSelected');
+            RED.classList.remove('redOn');
+            clikedOrder.push(Number(2));
+            setTimeout(redBack, 500);
+          };
+        }
+
+        function clickYellowTile(){
+          if(YELLOW.click){
+            YELLOW.classList.add('yellowSelected');
+            YELLOW.classList.remove('yellowOn');
+            clikedOrder.push(Number(3));
+            setTimeout(yellowBack, 500);
+          };
+        }
+
+        function clickBlueTile(){
+          if(BLUE.click){
+            BLUE.classList.add('blueSelected');
+            BLUE.classList.remove('blueOn');
+            clikedOrder.push(Number(4));
+            setTimeout(blueBack, 500);
+          };
+        }
+        
+      
+        GREEN.addEventListener('click', clickGreenTile);
+        RED.addEventListener('click', clickRedTile);
+        YELLOW.addEventListener('click', clickYellowTile);
+        BLUE.addEventListener('click', clickBlueTile);  
+        
+       
+        setTimeout(() => {
+          checkOrder();
+        },200);
+
+      }
+      
+      // Checa se as cores selecionadas são as mesmas da ordem gerada no jogo.
+      let checkOrder = () => {
+        for(let i in clickedOrder) {
+            if(clickedOrder[i] != order[i]) {
+                gameOver();
+                break;
+            }
+        }
+
+        if(clickedOrder.length == order.length) {
+          alert(`Pontuação: ${score}\nVocê acertou! Iniciando próximo nível!`);
+          nextLevel();
         }
       }
 
-      function clickGreenTile(){
-        if(GREEN.click){
-          GREEN.classList.add('greenSelected');
-          GREEN.classList.remove('greenOn');
-          clikedOrder.push(Number(1));
-          setTimeout(greenBack, 200);
-        };
+
+        // Próximo nível.
+        let nextLevel = () => {
+          points++;
+          gameStart();
+        }
+
+        // Game Over.
+        let gameOver = () => {
+          alert(`Pontuação: ${score}!\nVocê perdeu!\nClique em OK para jogar novamente.`);
+          order = [];
+          clickedOrder = [];
+          playGame();
+        }
+        
       }
 
-      function clickRedTile(){
-        if(RED.click){
-          RED.classList.add('redSelected');
-          RED.classList.remove('redOn');
-          clikedOrder.push(Number(2));
-          setTimeout(redBack, 200);
-        };
-      }
+      // Checa se as cores selecionadas são as mesmas da ordem gerada no jogo.
+      let checkOrder = () => {
+        for(let i in clickedOrder) {
+            if(clickedOrder[i] != order[i]) {
+                gameOver();
+                break;
+            }
+        }
 
-      function clickYellowTile(){
-        if(YELLOW.click){
-          YELLOW.classList.add('yellowSelected');
-          YELLOW.classList.remove('yellowOn');
-          clikedOrder.push(Number(3));
-          setTimeout(yellowBack, 200);
-        };
+        if(clickedOrder.length == order.length) {
+          alert(`Pontuação: ${score}\nVocê acertou! Iniciando próximo nível!`);
+          gameStart();
+        }
       }
-
-      function clickBlueTile(){
-        if(BLUE.click){
-          BLUE.classList.add('blueSelected');
-          BLUE.classList.remove('blueOn');
-          clikedOrder.push(Number(4));
-          setTimeout(blueBack, 200);
-        };
-      }
-
-      GREEN.addEventListener('click', clickGreenTile);
-      RED.addEventListener('click', clickRedTile);
-      YELLOW.addEventListener('click', clickYellowTile);
-      BLUE.addEventListener('click', clickBlueTile);
 
       function greenBack(){
         GREEN.classList.add('greenOn');
@@ -429,9 +789,90 @@ function gameBoard(){
         BLUE.classList.remove('blueSelected');
       }
     }
-  }
-}
-  
+
+    
   
 
+
   
+  /*  
+        function sequencyLeds(){
+          let i = 0;
+          do{
+            if(order[i] = 0){
+              clickGreenTile()
+            }
+            if(order[i] = 1){
+              clickRedTile()
+            }
+            if(order[i] = 2){
+              clickYellowTile()
+            }
+            if(order[i] = 3){
+              clickBlueTile()
+            }
+
+
+            function clickGreenTile(){
+              if(GREEN.click){
+              GREEN.classList.add('greenSelected');
+              GREEN.classList.remove('greenOn');
+              setTimeout(greenBack, 200);
+            };
+          }
+  
+          function clickRedTile(){
+            if(RED.click){
+              RED.classList.add('redSelected');
+              RED.classList.remove('redOn');
+              setTimeout(redBack, 200);
+            };
+          }
+  
+          function clickYellowTile(){
+            if(YELLOW.click){
+              YELLOW.classList.add('yellowSelected');
+              YELLOW.classList.remove('yellowOn');
+              setTimeout(yellowBack, 200);
+            };
+          }
+  
+          function clickBlueTile(){
+            if(BLUE.click){
+              BLUE.classList.add('blueSelected');
+              BLUE.classList.remove('blueOn');
+              setTimeout(blueBack, 200);
+            };
+          }
+
+          console.log(i)
+
+          i++;
+
+          } while (i < order.length)
+        }
+        */
+
+
+            /*
+            for(let i in order){
+              if (order.slice([i,]) == 0){
+                GREEN.classList.add('greenSelected');
+                GREEN.classList.remove('greenOn');
+                setTimeout(greenBack, 200);
+              } else if (order.slice([i,]) == 1){
+                RED.classList.add('redSelected');
+                RED.classList.remove('redOn');
+                setTimeout(redBack, 200);
+              } else if (order.slice([i,]) == 2){
+                YELLOW.classList.add('yellowSelected');
+                YELLOW.classList.remove('yellowOn');
+                setTimeout(yellowBack, 200);
+              } else if (order.slice([i,]) == 3){
+                BLUE.classList.add('blueSelected');
+                BLUE.classList.remove('blueOn');
+                setTimeout(blueBack, 200);
+              };      
+              i++;
+        }
+        */
